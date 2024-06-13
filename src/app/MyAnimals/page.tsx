@@ -30,7 +30,7 @@ export default function Page() {
                     </div>
                         You currently have {savedAnimals ? savedAnimals.length : 0} saved animals.
                     <div className="b-animal_cards">
-                        {savedAnimals.map((animal: animalEntry) => <AnimalCard animalsUpdate={(animalsUpdate)} handleRemove={handleRemove} key={animal.names} animal={animal}></AnimalCard>)}
+                        {savedAnimals && savedAnimals.length > 0 ? savedAnimals.map((animal: animalEntry) => <AnimalCard animalsUpdate={(animalsUpdate)} handleRemove={handleRemove} key={animal.names} animal={animal}></AnimalCard>) : null}
                     </div>
                 </div>
             </div>
