@@ -1,13 +1,21 @@
 import Image from "next/image";
 import React, { Dispatch, SetStateAction, FormEvent } from "react";
 import styles from "./page.module.scss";
+import { animalEntry } from "./page";
 
 interface ModalProps {
     openModal: boolean,
     modalAppearing: boolean,
     setOpenModal: Dispatch<SetStateAction<boolean>>,
     setModalAppearing: Dispatch<SetStateAction<boolean>>,
-    persistAnimal(): void
+    persistAnimal(formData: animalEntry): void
+}
+interface CurrentRef {
+    showModal(): void,
+    close(): void
+}
+interface ModalRef {
+    current?: CurrentRef | null
 }
 
 export default function AnimalModal(props : ModalProps) {
@@ -15,7 +23,7 @@ export default function AnimalModal(props : ModalProps) {
     const persistAnimal = props.persistAnimal;
     const modalAppearing = props.modalAppearing;
     const setModalAppearing = props.setModalAppearing;
-    const modalRef = React.useRef(null);
+    const modalRef : ModalRef = React.useRef(null);
 
     const [dateSelected, setDateSelected] = React.useState(false);
     const [mixedBreed, setMixedBreed] = React.useState(false);
@@ -43,7 +51,7 @@ export default function AnimalModal(props : ModalProps) {
         event.preventDefault();
         handleModalClose();
 
-        const formData = Object.fromEntries(new FormData(event.currentTarget));
+        const formData : animalEntry = Object.fromEntries(new FormData(event.currentTarget));
         persistAnimal(formData);
     }
 

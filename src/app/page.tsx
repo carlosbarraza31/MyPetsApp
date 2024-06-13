@@ -6,7 +6,7 @@ import originalStyles from "./page.module.css";
 import React from "react";
 import AnimalModal from "./AnimalModal";
 
-interface animalEntry {
+export interface animalEntry {
   names: string,
   lastName: string,
   birthDate: string,
@@ -18,12 +18,6 @@ export default function Home() {
   const [openModal, setOpenModal] = React.useState(false);
   const [modalAppearing, setModalAppearing] = React.useState(false);
 
-  /* React.useEffect(() => {
-    if (animals.length > 0) {
-      localStorage.setItem('savedAnimals', JSON.stringify(animals));
-    }
-  }, [animals]); */
-
   function persistAnimal(formData: animalEntry) {
     console.log('Animal persisted!');
 
@@ -34,7 +28,7 @@ export default function Home() {
       species: formData['species'],
       profilePicture: formData['profilePicture'] ? URL.createObjectURL(formData['profilePicture']) : null
     }
-    var previousAnimals = JSON.parse(localStorage.getItem("savedAnimals"));
+    var previousAnimals = JSON.parse(localStorage.getItem("savedAnimals") || '');
 
     if (previousAnimals) {
       previousAnimals.push(newEntry);
@@ -42,7 +36,7 @@ export default function Home() {
     } else {
       localStorage.setItem('savedAnimals', JSON.stringify([newEntry]));
     }
-    console.log('saved animals length: ' + JSON.parse(localStorage.getItem("savedAnimals")).length);
+    console.log('saved animals length: ' + JSON.parse(localStorage.getItem("savedAnimals") || '').length);
   }
 
   function handleAddAnimal() {
