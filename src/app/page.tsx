@@ -11,7 +11,8 @@ export interface animalEntry {
   lastName: string,
   birthDate: string,
   species: string,
-  profilePicture?: File
+  profilePicture?: File | string,
+  [key: string] : string | File | undefined
 }
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
       lastName: formData['lastName'],
       birthDate: formData['birthDate'],
       species: formData['species'],
-      profilePicture: formData['profilePicture'] ? URL.createObjectURL(formData['profilePicture']) : null
+      profilePicture: formData['profilePicture'] ? URL.createObjectURL(formData['profilePicture'] as File) : null
     }
     var previousAnimals = JSON.parse(localStorage.getItem("savedAnimals") || '');
 

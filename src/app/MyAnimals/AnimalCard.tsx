@@ -6,11 +6,12 @@ interface Animal {
     lastName: string,
     birthDate: string,
     species: string,
-    profilePicture?: File
+    profilePicture?: File | string
 }
 
 interface AnimalCardProps {
-    animal: Animal
+    animal: Animal,
+    animalsUpdate: boolean,
     handleRemove(): void
 }
 
@@ -18,7 +19,7 @@ export default function AnimalCard(props: AnimalCardProps) {
     var animal = props.animal;
     var handleRemove = props.handleRemove;
     var noIconPicture = "/assets/animal_noicon.svg";
-    var hasPicture = Object.keys(animal.profilePicture).length > 0;
+    var hasPicture = Object.keys(animal.profilePicture as Object).length > 0;
 
     const [showTooltip, setShowTooltip] = React.useState(false);
 
@@ -27,7 +28,7 @@ export default function AnimalCard(props: AnimalCardProps) {
     }
 
     function handleRemoveAnimal() {
-        var allAnimals = JSON.parse(localStorage.getItem("savedAnimals"));
+        var allAnimals = JSON.parse(localStorage.getItem("savedAnimals") || '');
         var animalsToKeep = allAnimals.filter((loopedAnimal : Animal) => loopedAnimal.names !== animal.names);
         localStorage.setItem("savedAnimals", JSON.stringify(animalsToKeep));
         handleRemove();
@@ -52,7 +53,7 @@ export default function AnimalCard(props: AnimalCardProps) {
                     {animal.lastName}
                 </div>
                 <div className="b-card_image-container">
-                    <Image className={`b-card_image ${!hasPicture && 'm-no_picture'}`} src={hasPicture ? animal.profilePicture : noIconPicture} fill={true} alt="Animal Picture"></Image>
+                    <Image className={`b-card_image ${!hasPicture && 'm-no_picture'}`} src={hasPicture ? animal.profilePicture as string : noIconPicture} fill={true} alt="Animal Picture"></Image>
                 </div>
                 <div className="b-card_data">
                     <span className="b-card_label">Date of birth: </span>

@@ -10,20 +10,13 @@ interface ModalProps {
     setModalAppearing: Dispatch<SetStateAction<boolean>>,
     persistAnimal(formData: animalEntry): void
 }
-interface CurrentRef {
-    showModal(): void,
-    close(): void
-}
-interface ModalRef {
-    current?: CurrentRef | null
-}
 
 export default function AnimalModal(props : ModalProps) {
     const openModal = props.openModal;
     const persistAnimal = props.persistAnimal;
     const modalAppearing = props.modalAppearing;
     const setModalAppearing = props.setModalAppearing;
-    const modalRef : ModalRef = React.useRef(null);
+    const modalRef= React.useRef<HTMLDialogElement>(null);
 
     const [dateSelected, setDateSelected] = React.useState(false);
     const [mixedBreed, setMixedBreed] = React.useState(false);
@@ -51,8 +44,18 @@ export default function AnimalModal(props : ModalProps) {
         event.preventDefault();
         handleModalClose();
 
-        const formData : animalEntry = Object.fromEntries(new FormData(event.currentTarget));
-        persistAnimal(formData);
+        var formData = Object.fromEntries(new FormData(event.currentTarget));
+        var formDataFormatted : animalEntry = {
+            names: '',
+            lastName: '',
+            birthDate: '',
+            species: ''
+        };
+
+        Object.keys(formData).forEach((key) => {
+            formDataFormatted[key] = formData[key];
+        })
+        persistAnimal(formDataFormatted);
     }
 
     return (

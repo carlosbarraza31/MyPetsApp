@@ -3,18 +3,19 @@
 import originalStyles from "@/app/page.module.css";
 import React from "react";
 import AnimalCard from "./AnimalCard";
+import { animalEntry } from "../page";
 
 export default function Page() {
     var [savedAnimals, setSavedAnimals] = React.useState([]);
-    const [animalsUpdate, setAnimalsUpdate] = React.useState(false);
+    const [animalsUpdate, setAnimalsUpdate] = React.useState<boolean>(false);
 
     function handleRemove() {
 	setAnimalsUpdate(!animalsUpdate);
-	setSavedAnimals(localStorage.getItem("savedAnimals") ? JSON.parse(localStorage.getItem("savedAnimals")) : null);
+	setSavedAnimals(localStorage.getItem("savedAnimals") ? JSON.parse(localStorage.getItem("savedAnimals") || '') : null);
     }
 
     React.useEffect(() => {
-        setSavedAnimals(localStorage.getItem("savedAnimals") ? JSON.parse(localStorage.getItem("savedAnimals")) : null);
+        setSavedAnimals(localStorage.getItem("savedAnimals") ? JSON.parse(localStorage.getItem("savedAnimals") || '') : null);
     }, []);
 
     return (
@@ -29,7 +30,7 @@ export default function Page() {
                     </div>
                         You currently have {savedAnimals ? savedAnimals.length : 0} saved animals.
                     <div className="b-animal_cards">
-                        {savedAnimals.map((animal) => <AnimalCard animalsUpdate={animalsUpdate} handleRemove={handleRemove} key={animal.names} animal={animal}></AnimalCard>)}
+                        {savedAnimals.map((animal: animalEntry) => <AnimalCard animalsUpdate={(animalsUpdate)} handleRemove={handleRemove} key={animal.names} animal={animal}></AnimalCard>)}
                     </div>
                 </div>
             </div>
